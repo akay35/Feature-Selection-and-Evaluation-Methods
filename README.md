@@ -140,3 +140,99 @@ Son olarak, bu süreçte elde edilen sonuçlar değerlendirilmiş, seçilen değ
 
 VIF, RFE ve Feature Importance gibi metrikleri kullanmak, modelin gereksiz ve fazla karmaşık özelliklerden arınmasını sağlayabilir, böylece sadece gerçekten değerli bilgiyi kullanarak daha verimli ve etkili tahminler yapılmasına olanak tanır. Bu süreç, modelin doğruluğunu artırırken, aynı zamanda yorumlanabilirliği artırır, çünkü hangi değişkenlerin modelin kararlarını etkilediğinin net bir şekilde görülmesini sağlar. Özellik mühendisliği, veriden doğru ve anlamlı bilgiler çıkarmak için vazgeçilmez bir adımdır ve doğru metriklerle bu özellikleri sıralamak ve seçmek, doğru sonuçlara ulaşmanın en etkili yoludur.
 
+----
+
+## Feature Selection and Evaluation Methods
+Feature selection and evaluation are fundamental to the success of machine learning models. As stated in the 2018 Harvard Business Review article, "If your data is bad, your machine learning tools are useless," the performance of a model largely depends on the quality of the data. This highlights the critical need for feature selection and appropriate variable engineering, especially in large datasets.
+
+In machine learning models, not all features contribute equally to prediction power. Unnecessary or highly correlated features can reduce model performance and lead to overfitting. Variance Inflation Factor (VIF) helps detect multicollinearity issues and remove irrelevant features, making the model more reliable.
+
+Furthermore, model performance is not only related to data quality but also to the ability to derive meaningful variables from it. Techniques like Recursive Feature Elimination (RFE) help select the most effective features, reducing model complexity and optimizing performance. As AI pioneer Andrew Ng said, "Applied machine learning is basically feature engineering," emphasizing the importance of variable engineering.
+
+Methods like Feature Importance help determine which variables the model relies on the most, improving prediction power and making the decision-making process more understandable.
+
+---
+
+### What is VIF (Variance Inflation Factor)?
+VIF measures the degree of multicollinearity (linear dependency) between variables. A high VIF value for a variable indicates that it is strongly correlated with other variables, which may negatively impact model performance.
+
+#### Interpretation of VIF Values:
+VIF < 5: No multicollinearity problem.
+5 ≤ VIF < 10: Mild multicollinearity; attention is needed.
+VIF ≥ 10: High multicollinearity; consider removing the variable or applying transformations.
+
+![image](https://github.com/akay35/Feature-Selection-and-Evaluation-Methods/blob/main/VIF%20Scores.png)
+
+#### When Should VIF Be Calculated?
+VIF analysis can be done both before and after building a model, but it is typically performed before model building.
+
+1. Pre-model Analysis:
+The goal is to detect multicollinearity among independent variables and optimize the model. This step is essential before building regression models to ensure that the variables are independent. Variables with high VIF can be removed to avoid overfitting and misleading results.
+
+2. Post-model Analysis:
+If the model shows low performance or high error rates (e.g., high RMSE or low R²), VIF analysis can be done to detect if multicollinearity is affecting model performance and to make adjustments if necessary.
+
+#### What Can Be Done After VIF Analysis?
+If high VIF values are detected, several solutions can be applied:
+
+Remove Variables with High VIF: Remove variables causing multicollinearity.
+Apply Transformations: Use transformations like logarithms or scaling to reduce correlations.
+PCA (Principal Component Analysis): Reduce the number of independent variables by applying PCA.
+Feature Engineering: Re-define or combine variables to create new ones.
+You can use the variance_inflation_factor function from the statsmodels.stats.outliers_influence module to calculate VIF.
+
+---
+
+### What is RFE (Recursive Feature Elimination)?
+Recursive Feature Elimination (RFE) is a technique used for feature selection. It aims to improve model performance by identifying and eliminating unnecessary or low-importance features. RFE works iteratively to eliminate the least important features and retain the ones that contribute the most to the model's prediction power.
+
+#### How RFE Works:
+Model Training: Train a model initially with all features (usually regression or classification).
+Feature Importance Ranking: The model computes the importance of each feature.
+Eliminate Features: The least important feature(s) are removed.
+Repeat: The model is retrained with the remaining features, and the importance is recalculated.
+Stop Criterion: This process continues until a predefined number of features remains or the model reaches a certain performance threshold.
+The result is a set of features that provide the best model performance.
+
+![image](https://github.com/akay35/Feature-Selection-and-Evaluation-Methods/blob/main/RFE.png)
+
+#### When Should RFE Be Calculated?
+RFE is applied before model creation to eliminate unnecessary features and ensure the model generalizes well. Applying RFE post-model is not ideal because the model would have already been trained with all features, including the irrelevant ones.
+
+#### Benefits of RFE:
+Simplifies Models: By removing irrelevant features, RFE simplifies the model.
+Reduces Computation Time: Fewer features mean less computation.
+Reduces Overfitting: Eliminating unnecessary features reduces the risk of overfitting.
+Improves Model Generalization: Models trained on important features tend to generalize better.
+Improves Interpretability: Fewer, more meaningful features make model outputs easier to interpret.
+You can use the RFE method from sklearn.feature_selection for feature selection.
+
+---
+
+### What is Feature Importance?
+Feature Importance measures the impact of each feature on the target variable in a machine learning model. It is used to determine which variables are most influential in the model's prediction power.
+
+When Should Feature Importance Be Calculated?
+Feature Importance can be assessed both before and after model building.
+
+1. Pre-model Analysis:
+To identify and remove irrelevant features before building the model. Reducing feature space before training helps speed up computation and minimize overfitting.
+
+2. Post-model Analysis:
+After training, analyze which features contributed the most to the model's prediction power. This helps in optimizing the model and improving interpretability.
+
+![image](https://github.com/akay35/Feature-Selection-and-Evaluation-Methods/blob/main/Feature%20Importance.png)
+
+The graph illustrates the most impactful features on the model's prediction power, with CLTV being the most important feature.
+
+---
+
+### Example Work
+In this example, we used a telecom customer churn dataset containing information about 7,043 customers receiving home phone and internet services from a telecom company in California.
+
+Steps Taken:
+Preprocessing: Missing values were filled, categorical variables encoded, and scaling applied.
+VIF Analysis: Multicollinearity was detected and high VIF variables were removed.
+RFE: The recursive feature elimination technique was applied to select the most relevant features for the model.
+Feature Importance: After training the model with LightGBM, feature importance analysis was performed to understand the weight each feature carries.
+The process improved the model's performance, reduced unnecessary complexity, and helped derive more accurate insights.
